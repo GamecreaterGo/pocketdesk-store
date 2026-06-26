@@ -76,37 +76,4 @@
       }
     ]
   }
-
-  /*
-  ─────────────────────────────────────────────────────────────────────
-  HOW TO ADD A NEW PRODUCT
-  ─────────────────────────────────────────────────────────────────────
-  Copy the block above (from { to the closing }) and paste it after
-  the last product, separated by a comma. Fill in your details.
-
-  Key fields explained:
-
-  "id"            → unique product code, e.g. "pdnb-002"
-  "name"          → product title shown everywhere
-  "tagline"       → short punchy one-liner shown on cards
-  "price"         → current selling price (number, no $ sign)
-  "originalPrice" → crossed-out was-price for sale items. null = no sale.
-  "badge"         → pill label on card: "Best Seller" | "New" | "Sale"
-                    | "Limited" — or null for none
-  "rating"        → number 1–5, decimals fine (e.g. 4.8)
-  "reviewCount"   → shown as "(312 reviews)" on the product card
-  "image"         → main card/hero image path (e.g. "images/product2.jpg")
-  "images"        → gallery array — first item is the main displayed image
-  "colors"        → array of colour variant names shown as selector chips
-  "featured"      → true = appears in the Featured section on the homepage
-  "inStock"       → true/false — false disables the Add to Cart button
-  "slug"          → URL-safe name, e.g. "my-new-product"
-                    Becomes: products.html?id=my-new-product
-
-  ADDING IMAGES:
-  1. Drop your photos into the /images/ folder
-  2. Reference them as "images/your-filename.jpg"
-  3. GitHub Pages and Netlify serve them automatically — no config needed.
-  ─────────────────────────────────────────────────────────────────────
-  */
 ]

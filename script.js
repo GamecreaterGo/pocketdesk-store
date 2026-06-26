@@ -6,9 +6,28 @@
 'use strict';
 
 /* ─────────────────────────────────────────────────────────────
-   CONFIG — change the path if you rename products.json
+   CONFIG
 ───────────────────────────────────────────────────────────────── */
 const PRODUCTS_URL = 'products.json';
+
+/* ─────────────────────────────────────────────────────────────
+   PAGE DETECTION
+   Uses href, not pathname.pop(), so it works correctly on:
+   - file://  (local development)
+   - Netlify  (https://yoursite.com/)
+   - GitHub Pages (https://user.github.io/repo/)
+   - Any sub-path deployment
+───────────────────────────────────────────────────────────────── */
+function currentPage() {
+  const href = window.location.href;
+  const filename = window.location.pathname.split('/').pop();
+  if (!filename || filename === '' || filename === 'index.html') return 'index';
+  if (filename === 'products.html') return 'products';
+  if (filename === 'about.html') return 'about';
+  if (filename === 'faq.html') return 'faq';
+  if (filename === 'contact.html') return 'contact';
+  return '';
+}
 
 /* ─────────────────────────────────────────────────────────────
    GLOBAL STATE
@@ -41,7 +60,7 @@ const cart = {
       });
     }
     this.save();
-    toast(`✓ Added to cart`, 'success');
+    toast('✓ Added to cart');
     openCart();
   },
 
@@ -80,7 +99,7 @@ const cart = {
       body.innerHTML = this.items.map(item => `
         <div class="cart-item" data-key="${item.key}">
           <img src="${item.image}" alt="${item.name}" class="cart-item__img"
-               onerror="this.src='https://placehold.co/72x72/f5f5f7/86868b?text=?'">
+               onerror="this.style.background='var(--surface)'">
           <div class="cart-item__info">
             <div class="cart-item__name">${item.name}</div>
             <div class="cart-item__variant">${item.color}</div>
@@ -127,14 +146,13 @@ function updateCartBadge() {
   });
 }
 
-function toast(msg, type = 'default') {
-  const container = qs('.toast-container') || (() => {
-    const c = document.createElement('div');
-    c.className = 'toast-container';
-    document.body.appendChild(c);
-    return c;
-  })();
-
+function toast(msg) {
+  let container = qs('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
   const t = document.createElement('div');
   t.className = 'toast';
   t.textContent = msg;
@@ -149,7 +167,6 @@ function toast(msg, type = 'default') {
    NAVIGATION
 ───────────────────────────────────────────────────────────────── */
 function initNav() {
-  // Hamburger
   const ham = qs('.nav__hamburger');
   const mob = qs('.nav__mobile');
   if (ham && mob) {
@@ -157,7 +174,6 @@ function initNav() {
       const isOpen = ham.classList.toggle('open');
       mob.classList.toggle('open', isOpen);
     });
-    // Close on link click
     mob.querySelectorAll('a').forEach(a =>
       a.addEventListener('click', () => {
         ham.classList.remove('open');
@@ -166,11 +182,12 @@ function initNav() {
     );
   }
 
-  // Active link
-  const path = location.pathname.split('/').pop() || 'index.html';
+  // Active link — match against the filename in pathname
+  const filename = window.location.pathname.split('/').pop() || 'index.html';
   qsa('.nav__links a, .nav__mobile a').forEach(a => {
     const href = a.getAttribute('href') || '';
-    if (href === path || (path === '' && href === 'index.html')) {
+    const hrefFile = href.split('?')[0]; // strip query string
+    if (hrefFile === filename || (filename === '' && hrefFile === 'index.html')) {
       a.classList.add('active');
     }
   });
@@ -179,7 +196,7 @@ function initNav() {
   const btt = qs('.back-to-top');
   if (btt) {
     window.addEventListener('scroll', () => {
-      btt.classList.toggle('visible', scrollY > 400);
+      btt.classList.toggle('visible', window.scrollY > 400);
     }, { passive: true });
     btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
@@ -201,9 +218,7 @@ function closeCart() {
 }
 
 function initCart() {
-  qsa('.nav__cart-btn').forEach(btn =>
-    btn.addEventListener('click', openCart)
-  );
+  qsa('.nav__cart-btn').forEach(btn => btn.addEventListener('click', openCart));
   qs('.cart-close')?.addEventListener('click', closeCart);
   qs('.cart-overlay')?.addEventListener('click', closeCart);
   updateCartBadge();
@@ -211,17 +226,18 @@ function initCart() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   LOAD PRODUCTS  (called by each page)
+   LOAD PRODUCTS FROM products.json
 ───────────────────────────────────────────────────────────────── */
 async function loadProducts() {
-  if (products.length) return products;         // cached
+  if (products.length) return products;
   try {
     const res = await fetch(PRODUCTS_URL);
-    if (!res.ok) throw new Error('Failed to load products.json');
-    products = await res.json();
+    if (!res.ok) throw new Error(`HTTP ${res.status} loading ${PRODUCTS_URL}`);
+    const data = await res.json();
+    products = Array.isArray(data) ? data : [];
     return products;
   } catch (err) {
-    console.error('[PocketDesk]', err);
+    console.error('[PocketDesk] Could not load products:', err);
     return [];
   }
 }
@@ -230,21 +246,16 @@ async function loadProducts() {
    PRODUCT CARD HTML
 ───────────────────────────────────────────────────────────────── */
 function productCardHtml(p) {
-  const badgeClass = {
-    'New':         'new',
-    'Sale':        'sale',
-    'Best Seller': '',
-    'Limited':     ''
-  }[p.badge] || '';
+  const badgeClassMap = { 'New': 'new', 'Sale': 'sale' };
+  const badgeClass = badgeClassMap[p.badge] ? `product-card__badge--${badgeClassMap[p.badge]}` : '';
 
   return `
-    <a class="product-card" href="products.html?id=${p.slug}"
-       aria-label="${p.name}">
-      ${p.badge ? `<span class="product-card__badge ${badgeClass ? `product-card__badge--${badgeClass}` : ''}">${p.badge}</span>` : ''}
+    <a class="product-card" href="products.html?id=${p.slug}" aria-label="${p.name}">
+      ${p.badge ? `<span class="product-card__badge ${badgeClass}">${p.badge}</span>` : ''}
       <div class="product-card__img-wrap">
         <img class="product-card__img" src="${p.image}" alt="${p.name}"
              loading="lazy"
-             onerror="this.src='https://placehold.co/600x500/f5f5f7/86868b?text=${encodeURIComponent(p.name)}'">
+             onerror="this.style.background='var(--surface)'">
       </div>
       <div class="product-card__body">
         <div class="product-card__cat">${p.category}</div>
@@ -271,19 +282,25 @@ async function initHomePage() {
   const grid = qs('#featuredGrid');
   if (!grid) return;
 
-  grid.innerHTML = '<p style="color:var(--gray); padding:2rem;">Loading products…</p>';
+  grid.innerHTML = '<div style="grid-column:1/-1; color:var(--gray); padding:2rem; text-align:center">Loading products…</div>';
 
   const ps = await loadProducts();
+
+  if (!ps.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1; color:var(--gray); padding:2rem; text-align:center">No products found. Make sure products.json is in the same folder as index.html.</div>';
+    return;
+  }
+
   const featured = ps.filter(p => p.featured);
 
   if (!featured.length) {
-    grid.innerHTML = '<p style="color:var(--gray)">No featured products found.</p>';
+    grid.innerHTML = '<div style="grid-column:1/-1; color:var(--gray); padding:2rem; text-align:center">No featured products. Set "featured": true in products.json.</div>';
     return;
   }
 
   grid.innerHTML = featured.map(productCardHtml).join('');
 
-  // Hero CTA: wire to first featured product
+  // Update hero CTA to point at first featured product
   const heroShopBtn = qs('#heroShopBtn');
   if (heroShopBtn && featured[0]) {
     heroShopBtn.href = `products.html?id=${featured[0].slug}`;
@@ -297,13 +314,15 @@ async function initProductsListPage() {
   const grid = qs('#allProductsGrid');
   if (!grid) return;
 
-  grid.innerHTML = '<p style="color:var(--gray); padding:2rem; grid-column:1/-1">Loading…</p>';
+  grid.innerHTML = '<div style="grid-column:1/-1; color:var(--gray); padding:2rem; text-align:center">Loading products…</div>';
 
   const ps = await loadProducts();
+
   if (!ps.length) {
-    grid.innerHTML = '<p style="grid-column:1/-1; color:var(--gray)">No products found.</p>';
+    grid.innerHTML = '<div style="grid-column:1/-1; color:var(--gray); padding:2rem; text-align:center">No products found. Make sure products.json is in the same folder.</div>';
     return;
   }
+
   grid.innerHTML = ps.map(productCardHtml).join('');
 }
 
@@ -311,13 +330,13 @@ async function initProductsListPage() {
    PRODUCT DETAIL PAGE
 ───────────────────────────────────────────────────────────────── */
 async function initProductDetailPage() {
-  const params = new URLSearchParams(location.search);
+  const params = new URLSearchParams(window.location.search);
   const slug   = params.get('id');
-  if (!slug) { redirectToShop(); return; }
+  if (!slug) { window.location.href = 'products.html'; return; }
 
   const ps = await loadProducts();
   const p  = ps.find(prod => prod.slug === slug || prod.id === slug);
-  if (!p) { redirectToShop(); return; }
+  if (!p) { window.location.href = 'products.html'; return; }
 
   // SEO
   document.title = `${p.name} — PocketDesk`;
@@ -332,7 +351,7 @@ async function initProductDetailPage() {
     <span>›</span>
     ${p.name}`;
 
-  // Page title elements
+  // Core fields
   setInnerText('#pdCategory', p.category);
   setInnerText('#pdTitle', p.name);
   setInnerText('#pdTagline', p.tagline);
@@ -340,47 +359,51 @@ async function initProductDetailPage() {
   setInnerText('#pdPriceNow', fmtPrice(p.price));
   setInnerText('#pdRatingNum', p.rating.toFixed(1));
   setInnerText('#pdReviewCount', `${p.reviewCount} reviews`);
+  setInnerText('#pdStars', starsHtml(p.rating));
 
-  const wasEl = qs('#pdPriceWas');
+  // Sale pricing
+  const wasEl  = qs('#pdPriceWas');
+  const saveEl = qs('#pdPriceSave');
   if (wasEl) {
     if (p.originalPrice) {
       wasEl.textContent = fmtPrice(p.originalPrice);
       wasEl.style.display = '';
-      const saveEl = qs('#pdPriceSave');
       if (saveEl) {
-        const pct = Math.round((1 - p.price / p.originalPrice) * 100);
-        saveEl.textContent = `Save ${pct}%`;
+        saveEl.textContent = `Save ${Math.round((1 - p.price / p.originalPrice) * 100)}%`;
         saveEl.style.display = '';
       }
     } else {
       wasEl.style.display = 'none';
-      const saveEl = qs('#pdPriceSave');
       if (saveEl) saveEl.style.display = 'none';
     }
   }
 
-  // Stars
-  qs('#pdStars')?.setAttribute('data-rating', p.rating);
-  setInnerText('#pdStars', starsHtml(p.rating));
-
   // Gallery
-  const mainImg = qs('#galleryMain');
+  const mainImg  = qs('#galleryMain');
   const thumbsEl = qs('#galleryThumbs');
-  const allImages = p.images?.length ? p.images : [p.image];
-  if (mainImg) mainImg.src = allImages[0];
+  const allImages = (p.images && p.images.length) ? p.images : [p.image];
 
-  if (thumbsEl && allImages.length > 1) {
-    thumbsEl.innerHTML = allImages.map((src, i) => `
-      <div class="gallery__thumb ${i === 0 ? 'active' : ''}"
-           onclick="switchGalleryImage(this, '${src}')">
-        <img src="${src}" alt="View ${i + 1}"
-             onerror="this.src='https://placehold.co/120x120/f5f5f7/86868b?text=${i+1}'">
-      </div>`).join('');
+  if (mainImg) {
+    mainImg.src = allImages[0];
+    mainImg.alt = p.name;
   }
 
-  // Colors
+  if (thumbsEl) {
+    if (allImages.length > 1) {
+      thumbsEl.innerHTML = allImages.map((src, i) => `
+        <div class="gallery__thumb ${i === 0 ? 'active' : ''}"
+             onclick="switchGalleryImage(this, '${src}')">
+          <img src="${src}" alt="${p.name} view ${i + 1}"
+               onerror="this.style.background='var(--surface)'">
+        </div>`).join('');
+    } else {
+      thumbsEl.innerHTML = '';
+    }
+  }
+
+  // Color picker
   const colorPicker = qs('#colorPicker');
-  if (colorPicker && p.colors?.length) {
+  if (colorPicker && p.colors && p.colors.length) {
     colorPicker.innerHTML = `
       <div class="color-picker__label">Color — <span id="selectedColor">${p.colors[0]}</span></div>
       <div class="color-picker__options">
@@ -392,25 +415,25 @@ async function initProductDetailPage() {
 
   // Features list
   const featList = qs('#pdFeatureList');
-  if (featList && p.features?.length) {
+  if (featList && p.features && p.features.length) {
     featList.innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
   }
 
   // Specs table
   const specsTable = qs('#pdSpecsTable');
   if (specsTable && p.specs) {
-    specsTable.innerHTML = Object.entries(p.specs).map(([k, v]) =>
-      `<tr><td>${k}</td><td>${v}</td></tr>`
-    ).join('');
+    specsTable.innerHTML = Object.entries(p.specs)
+      .map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`)
+      .join('');
   }
 
   // In the box
   const inboxList = qs('#pdInBox');
-  if (inboxList && p.inBox?.length) {
+  if (inboxList && p.inBox && p.inBox.length) {
     inboxList.innerHTML = p.inBox.map(item => `<li>${item}</li>`).join('');
   }
 
-  // Stock state
+  // Add to cart button
   const addBtn = qs('#addToCartBtn');
   if (addBtn) {
     if (!p.inStock) {
@@ -425,7 +448,7 @@ async function initProductDetailPage() {
     }
   }
 
-  // Reviews
+  // Reviews — uses correct ID: #reviews (not #reviewsSection)
   renderReviews(p);
 
   // Related products
@@ -442,10 +465,7 @@ function switchGalleryImage(thumb, src) {
   const main = qs('#galleryMain');
   if (main) {
     main.style.opacity = '0';
-    setTimeout(() => {
-      main.src = src;
-      main.style.opacity = '1';
-    }, 150);
+    setTimeout(() => { main.src = src; main.style.opacity = '1'; }, 150);
   }
   qsa('.gallery__thumb').forEach(t => t.classList.remove('active'));
   thumb.classList.add('active');
@@ -465,17 +485,13 @@ function setInnerText(sel, text) {
   if (el) el.textContent = text;
 }
 
-function redirectToShop() {
-  location.href = 'products.html';
-}
-
 /* ─────────────────────────────────────────────────────────────
    REVIEWS
+   BUG FIX: was checking for #reviewsSection which doesn't exist.
+   The section in products.html has id="reviews". Guard removed —
+   individual sub-elements are checked independently instead.
 ───────────────────────────────────────────────────────────────── */
 function renderReviews(p) {
-  const reviewsSection = qs('#reviewsSection');
-  if (!reviewsSection) return;
-
   // Summary
   const summaryEl = qs('#reviewSummary');
   if (summaryEl) {
@@ -487,86 +503,88 @@ function renderReviews(p) {
       </div>`;
   }
 
-  // Cards — seeded from products.json + any localStorage reviews
-  const storedKey = `pd_reviews_${p.id}`;
+  // Cards: seeded from products.json + user-submitted (localStorage)
+  const storedKey  = `pd_reviews_${p.id}`;
   const userReviews = JSON.parse(localStorage.getItem(storedKey) || '[]');
-  const allReviews = [...(p.reviews || []), ...userReviews];
+  const allReviews  = [...(p.reviews || []), ...userReviews];
 
   const grid = qs('#reviewsGrid');
   if (grid) {
-    grid.innerHTML = allReviews.map(r => `
-      <div class="review-card">
-        <div class="review-card__header">
-          <div>
-            <div class="review-card__author">${r.author}</div>
-            <div class="review-card__location">${r.location || ''}</div>
+    if (allReviews.length) {
+      grid.innerHTML = allReviews.map(r => `
+        <div class="review-card">
+          <div class="review-card__header">
+            <div>
+              <div class="review-card__author">${r.author}</div>
+              <div class="review-card__location">${r.location || ''}</div>
+            </div>
+            <div style="text-align:right">
+              <div class="review-card__stars">${starsHtml(r.rating)}</div>
+              <div class="review-card__date">${r.date || ''}</div>
+            </div>
           </div>
-          <div style="text-align:right">
-            <div class="review-card__stars">${starsHtml(r.rating)}</div>
-            <div class="review-card__date">${r.date || ''}</div>
-          </div>
-        </div>
-        <div class="review-card__title">${r.title}</div>
-        <div class="review-card__body">${r.body}</div>
-      </div>`).join('');
+          <div class="review-card__title">${r.title}</div>
+          <div class="review-card__body">${r.body}</div>
+        </div>`).join('');
+    } else {
+      grid.innerHTML = '<p style="color:var(--gray); font-size:var(--text-sm)">No reviews yet. Be the first!</p>';
+    }
   }
 
-  // Review form
   initReviewForm(p);
 }
 
 function initReviewForm(p) {
-  const form = qs('#reviewForm');
-  if (!form) return;
-
-  // Star picker
   const starInput = qs('#starInput');
   let selectedRating = 0;
+
   if (starInput) {
     starInput.innerHTML = [1,2,3,4,5].map(n =>
       `<span data-val="${n}" title="${n} star">★</span>`
     ).join('');
+
     starInput.querySelectorAll('span').forEach(star => {
       star.addEventListener('click', () => {
         selectedRating = Number(star.dataset.val);
         updateStarInput(starInput, selectedRating);
       });
-      star.addEventListener('mouseenter', () => {
-        updateStarInput(starInput, Number(star.dataset.val));
-      });
+      star.addEventListener('mouseenter', () => updateStarInput(starInput, Number(star.dataset.val)));
     });
-    starInput.addEventListener('mouseleave', () =>
-      updateStarInput(starInput, selectedRating)
-    );
+    starInput.addEventListener('mouseleave', () => updateStarInput(starInput, selectedRating));
   }
 
-  qs('#reviewSubmit')?.addEventListener('click', () => {
-    const name   = (qs('#reviewName')?.value || '').trim();
-    const title  = (qs('#reviewTitle')?.value || '').trim();
-    const body   = (qs('#reviewBody')?.value || '').trim();
+  const submitBtn = qs('#reviewSubmit');
+  if (!submitBtn) return;
+
+  // Clone to remove any previous listener (in case renderReviews is called again)
+  const freshBtn = submitBtn.cloneNode(true);
+  submitBtn.parentNode.replaceChild(freshBtn, submitBtn);
+
+  freshBtn.addEventListener('click', () => {
+    const name  = (qs('#reviewName')?.value  || '').trim();
+    const title = (qs('#reviewTitle')?.value || '').trim();
+    const body  = (qs('#reviewBody')?.value  || '').trim();
 
     if (!name || !title || !body || selectedRating === 0) {
-      toast('Please fill in all fields and select a star rating.', 'error');
+      toast('Please fill in all fields and select a star rating.');
       return;
     }
 
     const review = {
-      author:   name,
-      location: '',
-      rating:   selectedRating,
-      date:     new Date().toISOString().slice(0, 10),
+      author: name, location: '',
+      rating: selectedRating,
+      date: new Date().toISOString().slice(0, 10),
       title, body
     };
 
-    const key = `pd_reviews_${p.id}`;
+    const key      = `pd_reviews_${p.id}`;
     const existing = JSON.parse(localStorage.getItem(key) || '[]');
     existing.unshift(review);
     localStorage.setItem(key, JSON.stringify(existing));
 
-    toast('✓ Review submitted!', 'success');
+    toast('✓ Review submitted!');
     renderReviews(p);
 
-    // Clear form
     ['#reviewName','#reviewTitle','#reviewBody'].forEach(sel => {
       const el = qs(sel);
       if (el) el.value = '';
@@ -603,12 +621,9 @@ function initTabs() {
 ───────────────────────────────────────────────────────────────── */
 function initFaq() {
   qsa('.faq-item').forEach(item => {
-    const btn = item.querySelector('.faq-question');
-    btn?.addEventListener('click', () => {
+    item.querySelector('.faq-question')?.addEventListener('click', () => {
       const isOpen = item.classList.contains('open');
-      // Close all
       qsa('.faq-item').forEach(i => i.classList.remove('open'));
-      // Open clicked if wasn't open
       if (!isOpen) item.classList.add('open');
     });
   });
@@ -619,15 +634,14 @@ function initFaq() {
 ───────────────────────────────────────────────────────────────── */
 function initNewsletter() {
   qsa('.newsletter__form').forEach(form => {
-    const btn = form.querySelector('button');
-    btn?.addEventListener('click', () => {
+    form.querySelector('button')?.addEventListener('click', () => {
       const input = form.querySelector('.newsletter__input');
       const email = (input?.value || '').trim();
       if (!email || !email.includes('@')) {
-        toast('Please enter a valid email address.', 'error');
+        toast('Please enter a valid email address.');
         return;
       }
-      toast('🎉 You\'re subscribed! Welcome to PocketDesk.', 'success');
+      toast("🎉 You're subscribed! Welcome to PocketDesk.");
       if (input) input.value = '';
     });
   });
@@ -637,45 +651,39 @@ function initNewsletter() {
    CONTACT FORM
 ───────────────────────────────────────────────────────────────── */
 function initContactForm() {
-  const btn = qs('#contactSubmit');
-  if (!btn) return;
-  btn.addEventListener('click', () => {
-    const name    = (qs('#contactName')?.value || '').trim();
-    const email   = (qs('#contactEmail')?.value || '').trim();
+  qs('#contactSubmit')?.addEventListener('click', () => {
+    const name    = (qs('#contactName')?.value    || '').trim();
+    const email   = (qs('#contactEmail')?.value   || '').trim();
     const message = (qs('#contactMessage')?.value || '').trim();
     if (!name || !email || !message) {
-      toast('Please fill in all fields.', 'error');
+      toast('Please fill in all fields.');
       return;
     }
-    toast('✓ Message sent! We\'ll reply within 24 hours.', 'success');
+    toast("✓ Message sent! We'll reply within 24 hours.");
     ['#contactName','#contactEmail','#contactSubject','#contactMessage']
       .forEach(sel => { const el = qs(sel); if (el) el.value = ''; });
   });
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CHECKOUT (placeholder — wire to Stripe or similar)
+   CHECKOUT  (wire to Stripe or similar when ready)
 ───────────────────────────────────────────────────────────────── */
 window.checkout = function() {
   if (cart.items.length === 0) {
-    toast('Your cart is empty.', 'error');
+    toast('Your cart is empty.');
     return;
   }
-  toast('Checkout coming soon — connect Stripe or your preferred provider!', 'default');
-  /*
-    TO INTEGRATE STRIPE:
-    1. npm install @stripe/stripe-js  (or use CDN)
-    2. const stripe = Stripe('your_publishable_key');
-    3. Call your backend to create a CheckoutSession
-    4. stripe.redirectToCheckout({ sessionId })
-  */
+  toast('Checkout coming soon — connect Stripe or your preferred provider!');
 };
 
 /* ─────────────────────────────────────────────────────────────
-   ROUTER — detect page and run the right initialiser
+   ROUTER
+   BUG FIX: was using location.pathname.split('/').pop() which
+   returns "" on bare-directory URLs (e.g. https://site.com/ or
+   file:///folder/). Now uses currentPage() which handles all cases.
 ───────────────────────────────────────────────────────────────── */
 function route() {
-  const path = location.pathname.split('/').pop();
+  const page = currentPage();
 
   initNav();
   initCart();
@@ -684,12 +692,12 @@ function route() {
   initNewsletter();
   initContactForm();
 
-  if (path === '' || path === 'index.html') {
+  if (page === 'index') {
     initHomePage();
   }
-  if (path === 'products.html') {
-    // If URL has ?id=slug → detail view, otherwise list
-    const hasId = new URLSearchParams(location.search).has('id');
+
+  if (page === 'products') {
+    const hasId = new URLSearchParams(window.location.search).has('id');
     if (hasId) {
       initProductDetailPage();
     } else {
