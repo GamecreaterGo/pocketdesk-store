@@ -1,167 +1,78 @@
 [
   {
-    "id": "fbpk-001",
-    "name": "Foldable Bluetooth Pocket Keyboard",
-    "tagline": "Full-size typing. Pocket-size freedom.",
+    "id": "mfwbk-001",
+    "name": "Mini Foldable Wireless Bluetooth Keyboard",
+    "tagline": "Slip it in your pocket. Pull out a full keyboard.",
     "price": 79.99,
     "originalPrice": 99.99,
     "category": "Keyboards",
     "badge": "Best Seller",
     "rating": 4.8,
     "reviewCount": 312,
-    "image": "https://placehold.co/600x500/1d1d1f/ffffff?text=Pocket+Keyboard",
+    "image": "images/keyboard1.jpg",
     "images": [
-      "https://placehold.co/600x500/1d1d1f/ffffff?text=Front+View",
-      "https://placehold.co/600x500/2d2d2f/ffffff?text=Folded+View",
-      "https://placehold.co/600x500/3d3d3f/ffffff?text=In+Use",
-      "https://placehold.co/600x500/0a0a0f/ffffff?text=Close+Up"
+      "images/keyboard1.jpg",
+      "images/keyboard2.jpg",
+      "images/keyboard3.jpg",
+      "images/keyboard4.jpg",
+      "images/keyboard5.jpg",
+      "images/keyboard6.jpg"
     ],
     "colors": ["Space Gray", "Silver", "Midnight"],
-    "description": "The PocketDesk Foldable Bluetooth Keyboard reimagines mobile productivity. Engineered from aircraft-grade aluminum and premium ABS keys, it unfolds to a full 97% of a standard keyboard layout — then folds to the size of a smartphone. Pair with up to 3 devices simultaneously. Switch instantly.",
+    "description": "Most keyboards demand you adapt to them. The PocketDesk Mini Foldable Wireless Keyboard was built the other way around. Machined from aerospace-grade aluminum with precision scissor-switch keys, it unfolds to a full typing surface in one smooth motion — then folds back to the footprint of a passport. Pair it with your iPhone, iPad, Android, or laptop. Switch between three devices without missing a keystroke. This is what mobile productivity is supposed to feel like.",
     "features": [
       "Full QWERTY layout at 97% standard size",
-      "Multi-device: pair up to 3 devices, switch instantly",
+      "Multi-device Bluetooth: pair 3 devices, switch instantly",
       "70-hour battery life on a single charge",
-      "Aircraft-grade aluminum body",
-      "iOS, Android, Windows, macOS compatible",
-      "Scissor-switch keys with 1.5mm travel",
-      "USB-C charging, 90-min full charge",
-      "Folds to 148 × 99 × 14mm"
+      "Aerospace-grade aluminum build with premium ABS keys",
+      "Universal: iOS, Android, Windows, macOS",
+      "Precision scissor-switch keys with 1.5mm travel",
+      "USB-C fast charging — full battery in 90 minutes",
+      "Folds to passport size: 148 × 99 × 14mm"
     ],
     "specs": {
       "Weight": "198g",
       "Folded Size": "148 × 99 × 14mm",
       "Open Size": "296 × 99 × 7mm",
-      "Battery": "400mAh, 70hr life",
-      "Charging": "USB-C, 90 minutes",
+      "Battery": "400mAh — up to 70 hours",
+      "Charging": "USB-C, 90 minutes to full",
       "Connectivity": "Bluetooth 5.1",
       "Range": "10 meters",
-      "Compatibility": "iOS, Android, Windows, macOS"
+      "Compatibility": "iOS, Android, Windows, macOS, iPadOS"
     },
-    "inBox": ["Foldable Keyboard", "USB-C Cable", "Carrying Pouch", "Quick Start Guide"],
+    "inBox": [
+      "Mini Foldable Wireless Keyboard",
+      "USB-C Charging Cable",
+      "Premium Carrying Pouch",
+      "Quick Start Guide"
+    ],
     "featured": true,
     "inStock": true,
-    "slug": "foldable-bluetooth-pocket-keyboard",
+    "slug": "mini-foldable-wireless-bluetooth-keyboard",
     "reviews": [
       {
         "author": "Marcus T.",
         "location": "San Francisco, CA",
         "rating": 5,
         "date": "2025-11-14",
-        "title": "Best travel keyboard I've ever owned",
-        "body": "I've been through four travel keyboards in three years. This one finally got it right. The key travel feels real, not mushy. Pairs in seconds. Fits in my jacket pocket. Nothing else comes close."
+        "title": "The only travel keyboard worth owning",
+        "body": "I've been through four so-called travel keyboards in three years. Every one of them felt like a compromise — mushy keys, flimsy hinges, dead batteries at the worst moment. The PocketDesk is the first one that doesn't ask you to settle. Key travel is real. It pairs in seconds. It fits in my jacket pocket. Nothing else I've tried comes close."
       },
       {
         "author": "Priya N.",
         "location": "London, UK",
         "rating": 5,
         "date": "2025-10-29",
-        "title": "Works flawlessly with iPad and iPhone",
-        "body": "Switching between my iPhone and iPad is seamless — I just tap the button and it reconnects in under a second. Battery lasts weeks. The aluminum body feels genuinely premium."
+        "title": "Seamless between iPhone and iPad",
+        "body": "Switching between my iPhone and iPad is instant — one button tap and it reconnects before I've even looked up. The battery has lasted weeks on a single charge with my daily use. The aluminum body has a solidity to it that you simply don't expect at this price point. It genuinely feels like a PocketDesk product should."
       },
       {
         "author": "James W.",
         "location": "Austin, TX",
         "rating": 4,
         "date": "2025-10-12",
-        "title": "Nearly perfect, tiny learning curve",
-        "body": "Took about a day to adjust to the layout but now I'm fully up to speed. Build quality is excellent. Docking it in my laptop bag every day and it's held up perfectly."
-      }
-    ]
-  },
-
-  {
-    "id": "pdms-002",
-    "name": "Magnetic Desk Stand Pro",
-    "tagline": "Every device. One perfect angle.",
-    "price": 49.99,
-    "originalPrice": null,
-    "category": "Stands",
-    "badge": "New",
-    "rating": 4.7,
-    "reviewCount": 89,
-    "image": "https://placehold.co/600x500/2d2d2f/ffffff?text=Desk+Stand+Pro",
-    "images": [
-      "https://placehold.co/600x500/2d2d2f/ffffff?text=Front+View",
-      "https://placehold.co/600x500/1d1d1f/ffffff?text=Side+View"
-    ],
-    "colors": ["Space Gray", "Silver"],
-    "description": "A magnetic, height-adjustable desk stand machined from solid aluminum. Compatible with any phone or tablet up to 13 inches. Anti-slip silicone base keeps it locked to your desk without a scratch.",
-    "features": [
-      "360° rotation, 180° tilt adjustment",
-      "MagSafe compatible magnetic mount",
-      "Supports phones and tablets up to 13\"",
-      "Solid aluminum construction",
-      "Anti-scratch silicone pads",
-      "Cable management groove"
-    ],
-    "specs": {
-      "Weight": "310g",
-      "Height Range": "120–220mm",
-      "Max Device Width": "up to 13 inches",
-      "Material": "6061 Aluminum Alloy",
-      "Base": "Anti-slip silicone"
-    },
-    "inBox": ["Desk Stand", "Magnetic Adapter Ring", "Cleaning Cloth"],
-    "featured": true,
-    "inStock": true,
-    "slug": "magnetic-desk-stand-pro",
-    "reviews": [
-      {
-        "author": "Elena R.",
-        "location": "New York, NY",
-        "rating": 5,
-        "date": "2025-12-01",
-        "title": "Beautifully made",
-        "body": "Looks like it belongs on an Apple Store shelf. Sturdy, smooth adjustments, and the magnetic hold is strong but not annoying to remove."
-      }
-    ]
-  },
-
-  {
-    "id": "pdch-003",
-    "name": "3-in-1 Wireless Charging Hub",
-    "tagline": "One surface. Full power.",
-    "price": 69.99,
-    "originalPrice": 89.99,
-    "category": "Charging",
-    "badge": "Sale",
-    "rating": 4.6,
-    "reviewCount": 174,
-    "image": "https://placehold.co/600x500/0a0a0f/ffffff?text=Charging+Hub",
-    "images": [
-      "https://placehold.co/600x500/0a0a0f/ffffff?text=Top+View",
-      "https://placehold.co/600x500/1a1a2f/ffffff?text=In+Use"
-    ],
-    "colors": ["Midnight", "Ivory White"],
-    "description": "Charge your phone, earbuds, and watch simultaneously from one slim pad. 15W fast wireless charging, MagSafe certified, with an integrated LED status ring that dims automatically at night.",
-    "features": [
-      "3 simultaneous wireless charging zones",
-      "15W MagSafe fast charging",
-      "Apple Watch fast charge certified",
-      "Auto-dimming LED status ring",
-      "Foreign object detection",
-      "USB-C power delivery input"
-    ],
-    "specs": {
-      "Output": "Up to 15W per zone",
-      "Input": "USB-C 45W PD",
-      "Dimensions": "220 × 100 × 8mm",
-      "Weight": "245g",
-      "Compatibility": "Qi, MagSafe, Apple Watch"
-    },
-    "inBox": ["Charging Hub", "USB-C Cable", "45W Power Adapter"],
-    "featured": false,
-    "inStock": true,
-    "slug": "3-in-1-wireless-charging-hub",
-    "reviews": [
-      {
-        "author": "David K.",
-        "location": "Chicago, IL",
-        "rating": 5,
-        "date": "2025-11-20",
-        "title": "Cleaned up my nightstand completely",
-        "body": "Three cables replaced by one pad. Charges everything fast. The LED dims perfectly at night. Worth every cent."
+        "title": "Small learning curve, then it's perfect",
+        "body": "Took about a day to fully adjust to the layout. By day two I was back to full speed. Build quality is exceptional — I've been throwing it in my laptop bag every day for two months and there's not a scratch on it. The hinge still snaps open with the same satisfying click as when it arrived."
       }
     ]
   }
@@ -170,29 +81,32 @@
   ─────────────────────────────────────────────────────────────────────
   HOW TO ADD A NEW PRODUCT
   ─────────────────────────────────────────────────────────────────────
-  Copy the block above and fill in your details. Key fields explained:
+  Copy the block above (from { to the closing }) and paste it after
+  the last product, separated by a comma. Fill in your details.
 
-  "id"            → unique product code, e.g. "pdnb-004"
+  Key fields explained:
+
+  "id"            → unique product code, e.g. "pdnb-002"
   "name"          → product title shown everywhere
-  "tagline"       → short punchy line, shown on cards
-  "price"         → current selling price (number, no $)
-  "originalPrice" → crossed-out price for sales. Set null if no sale.
-  "badge"         → small label on the card: "Best Seller", "New",
-                     "Sale", "Limited" — or set to null for none
-  "rating"        → number 1–5 (can be decimal, e.g. 4.8)
-  "reviewCount"   → total number of reviews (shown as "(312 reviews)")
-  "image"         → main product image URL (or /images/your-photo.jpg)
-  "images"        → array of additional image URLs for the gallery
-  "colors"        → array of color variant names
-  "featured"      → true = appears on homepage Featured section
-  "inStock"       → true/false controls Add to Cart button
-  "slug"          → URL-friendly name: "my-new-product"
-                     Used as: products.html?id=my-new-product
+  "tagline"       → short punchy one-liner shown on cards
+  "price"         → current selling price (number, no $ sign)
+  "originalPrice" → crossed-out was-price for sale items. null = no sale.
+  "badge"         → pill label on card: "Best Seller" | "New" | "Sale"
+                    | "Limited" — or null for none
+  "rating"        → number 1–5, decimals fine (e.g. 4.8)
+  "reviewCount"   → shown as "(312 reviews)" on the product card
+  "image"         → main card/hero image path (e.g. "images/product2.jpg")
+  "images"        → gallery array — first item is the main displayed image
+  "colors"        → array of colour variant names shown as selector chips
+  "featured"      → true = appears in the Featured section on the homepage
+  "inStock"       → true/false — false disables the Add to Cart button
+  "slug"          → URL-safe name, e.g. "my-new-product"
+                    Becomes: products.html?id=my-new-product
 
-  USING LOCAL IMAGES:
-  1. Put your photo in an /images/ folder (create it next to index.html)
-  2. Set "image": "/images/my-product.jpg"
-  3. GitHub Pages and Netlify will serve it automatically.
+  ADDING IMAGES:
+  1. Drop your photos into the /images/ folder
+  2. Reference them as "images/your-filename.jpg"
+  3. GitHub Pages and Netlify serve them automatically — no config needed.
   ─────────────────────────────────────────────────────────────────────
   */
 ]
