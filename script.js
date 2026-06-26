@@ -459,9 +459,8 @@ async function initProductDetailPage() {
     if (buyBtn) {
       buyBtn.addEventListener('click', () => {
         const color = qs('#selectedColor')?.textContent || (p.colors?.[0] || 'Default');
-        // Add to cart silently, then go straight to checkout
         cart.add(p.id, color);
-        window.location.href = `checkout.html?id=${p.slug}`;
+        window.location.href = 'checkout.html';
       });
     }
   }
@@ -812,14 +811,15 @@ function initCheckoutForm() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CHECKOUT (placeholder — wire to Stripe or similar when ready)
+   CHECKOUT — navigates to checkout.html
+   Cart is persisted in localStorage so contents survive navigation.
 ───────────────────────────────────────────────────────────────── */
 window.checkout = function() {
   if (cart.items.length === 0) {
     toast('Your cart is empty.');
     return;
   }
-  toast('Checkout coming soon — connect Stripe or your preferred provider!');
+  window.location.href = 'checkout.html';
 };
 
 /* ─────────────────────────────────────────────────────────────
