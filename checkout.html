@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — PocketDesk</title>
+  <meta name="description" content="Complete your PocketDesk order. Secure checkout with fast shipping.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0a0f'/><text y='22' x='7' font-size='18'>⌨</text></svg>">
+</head>
+<body>
+
+  <!-- ═══════ NAVIGATION ═══════ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="PocketDesk home">
+        <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect width="28" height="28" rx="7" fill="#0A0A0F"/>
+          <rect x="6" y="11" width="16" height="10" rx="2" fill="white" opacity=".9"/>
+          <rect x="9" y="8" width="10" height="5" rx="1.5" fill="white" opacity=".5"/>
+          <rect x="11" y="13" width="2" height="2" rx=".4" fill="#0A0A0F"/>
+          <rect x="15" y="13" width="2" height="2" rx=".4" fill="#0A0A0F"/>
+          <rect x="11" y="17" width="6" height="2" rx=".4" fill="#0A0A0F"/>
+        </svg>
+        PocketDesk
+      </a>
+
+      <ul class="nav__links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <button class="nav__cart-btn" aria-label="Shopping cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span class="cart-badge" aria-live="polite">0</span>
+        </button>
+        <button class="nav__hamburger" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav__mobile" aria-label="Mobile navigation">
+      <a href="index.html">Home</a>
+      <a href="products.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <main class="checkout-page">
+    <div class="container">
+
+      <!-- Page heading -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <a href="products.html">Shop</a>
+        <span>›</span>
+        Checkout
+      </nav>
+
+      <h1 class="checkout-page__title">Checkout</h1>
+      <p class="checkout-page__subtitle">All fields are required. Your information is never shared.</p>
+
+      <div class="checkout-grid">
+
+        <!-- ══════ LEFT: FORM ══════ -->
+        <div>
+
+          <!-- Contact -->
+          <div class="checkout-form-card" style="margin-bottom: var(--sp-5);">
+            <h2 class="checkout-section-title">Contact Information</h2>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="coName">Full Name</label>
+                <input type="text" id="coName" class="form-control"
+                       placeholder="Alex Johnson" autocomplete="name">
+              </div>
+            </div>
+
+            <div class="form-row form-row--2col">
+              <div class="form-group">
+                <label for="coEmail">Email Address</label>
+                <input type="email" id="coEmail" class="form-control"
+                       placeholder="alex@example.com" autocomplete="email">
+              </div>
+              <div class="form-group">
+                <label for="coPhone">Phone Number</label>
+                <input type="tel" id="coPhone" class="form-control"
+                       placeholder="+1 (555) 000-0000" autocomplete="tel">
+              </div>
+            </div>
+          </div>
+
+          <!-- Shipping -->
+          <div class="checkout-form-card">
+            <h2 class="checkout-section-title">Shipping Address</h2>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="coAddress">Street Address</label>
+                <input type="text" id="coAddress" class="form-control"
+                       placeholder="123 Main Street, Apt 4B" autocomplete="street-address">
+              </div>
+            </div>
+
+            <div class="form-row form-row--2col">
+              <div class="form-group">
+                <label for="coCity">City</label>
+                <input type="text" id="coCity" class="form-control"
+                       placeholder="San Francisco" autocomplete="address-level2">
+              </div>
+              <div class="form-group">
+                <label for="coState">State / Province</label>
+                <input type="text" id="coState" class="form-control"
+                       placeholder="CA" autocomplete="address-level1">
+              </div>
+            </div>
+
+            <div class="form-row form-row--2col">
+              <div class="form-group">
+                <label for="coZip">ZIP / Postal Code</label>
+                <input type="text" id="coZip" class="form-control"
+                       placeholder="94105" autocomplete="postal-code">
+              </div>
+              <div class="form-group">
+                <label for="coCountry">Country</label>
+                <select id="coCountry" class="form-control" autocomplete="country">
+                  <option value="">Select country…</option>
+                  <option value="US">United States</option>
+                  <option value="GB">United Kingdom</option>
+                  <option value="CA">Canada</option>
+                  <option value="AU">Australia</option>
+                  <option value="DE">Germany</option>
+                  <option value="FR">France</option>
+                  <option value="NL">Netherlands</option>
+                  <option value="SE">Sweden</option>
+                  <option value="NO">Norway</option>
+                  <option value="DK">Denmark</option>
+                  <option value="SG">Singapore</option>
+                  <option value="JP">Japan</option>
+                  <option value="NZ">New Zealand</option>
+                  <option value="IE">Ireland</option>
+                  <option value="CH">Switzerland</option>
+                  <option value="AT">Austria</option>
+                  <option value="BE">Belgium</option>
+                  <option value="IT">Italy</option>
+                  <option value="ES">Spain</option>
+                  <option value="PT">Portugal</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Shipping method -->
+            <div style="margin-top: var(--sp-6);">
+              <div class="checkout-section-title" style="font-size:var(--text-sm);">
+                Shipping Method
+              </div>
+              <div style="display:flex; flex-direction:column; gap:var(--sp-3);">
+
+                <label class="shipping-option" style="
+                  display:flex; align-items:center; gap:var(--sp-4);
+                  padding: var(--sp-4); border-radius: var(--r-md);
+                  border: 1.5px solid var(--accent);
+                  background: rgba(0,102,204,.04); cursor:pointer;">
+                  <input type="radio" name="shipping" value="standard" checked
+                         style="accent-color:var(--accent); width:16px; height:16px;">
+                  <div style="flex:1">
+                    <div style="font-weight:700; font-size:var(--text-sm);">Standard Shipping</div>
+                    <div style="font-size:var(--text-xs); color:var(--gray);">3–5 business days</div>
+                  </div>
+                  <div style="font-size:var(--text-sm); font-weight:600; color:var(--success);">
+                    Free over $50
+                  </div>
+                </label>
+
+                <label class="shipping-option" style="
+                  display:flex; align-items:center; gap:var(--sp-4);
+                  padding: var(--sp-4); border-radius: var(--r-md);
+                  border: 1.5px solid var(--gray-lt);
+                  cursor:pointer;">
+                  <input type="radio" name="shipping" value="express"
+                         style="accent-color:var(--accent); width:16px; height:16px;">
+                  <div style="flex:1">
+                    <div style="font-weight:700; font-size:var(--text-sm);">Express Shipping</div>
+                    <div style="font-size:var(--text-xs); color:var(--gray);">1–2 business days</div>
+                  </div>
+                  <div style="font-size:var(--text-sm); font-weight:600;">$14.99</div>
+                </label>
+
+              </div>
+            </div>
+
+          </div><!-- /shipping card -->
+
+        </div><!-- /left col -->
+
+        <!-- ══════ RIGHT: ORDER SUMMARY ══════ -->
+        <div>
+          <div class="checkout-summary-card">
+            <h2 class="checkout-section-title">Order Summary</h2>
+
+            <!-- Populated by script.js initCheckoutPage() -->
+            <div id="checkoutSummary">
+              <div style="color:var(--gray); font-size:var(--text-sm); padding: var(--sp-4) 0;">
+                Loading order summary…
+              </div>
+            </div>
+
+            <!-- Place Order -->
+            <button id="placeOrderBtn" class="btn btn--accent btn--lg btn--full place-order-btn">
+              Place Order — <span id="placeOrderTotal">…</span>
+            </button>
+
+            <!-- Trust signals -->
+            <div class="checkout-trust" aria-label="Security and trust">
+              <div class="checkout-trust__item">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M8 1l1.5 3 3.5.5-2.5 2.5.6 3.5L8 9l-3.1 1.5.6-3.5L3 4.5 6.5 4z"/>
+                </svg>
+                Secure checkout — SSL encrypted
+              </div>
+              <div class="checkout-trust__item">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <rect x="2" y="5" width="12" height="9" rx="1.5"/>
+                  <path d="M5 5V4a3 3 0 016 0v1"/>
+                </svg>
+                Your payment info is never stored
+              </div>
+              <div class="checkout-trust__item">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M2 8l4 4 8-8"/>
+                </svg>
+                30-day hassle-free returns
+              </div>
+              <div class="checkout-trust__item">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M2 8l4 4 8-8"/>
+                </svg>
+                2-year warranty on all products
+              </div>
+            </div>
+
+          </div><!-- /summary card -->
+
+          <!-- Back link -->
+          <div style="text-align:center; margin-top: var(--sp-5);">
+            <a href="javascript:history.back()" class="btn btn--ghost" style="font-size:var(--text-sm);">
+              ← Back to product
+            </a>
+          </div>
+
+        </div><!-- /right col -->
+
+      </div><!-- /checkout-grid -->
+
+    </div><!-- /container -->
+  </main>
+
+  <!-- ═══════ FOOTER ═══════ -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo" style="color:white; margin-bottom:var(--sp-4); display:inline-flex">
+            PocketDesk
+          </a>
+          <p>Premium productivity gadgets for people who work anywhere. Designed with intention. Built to last.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">Shop</div>
+          <ul class="footer__links" role="list">
+            <li><a href="products.html">All Products</a></li>
+            <li><a href="products.html?id=mini-foldable-wireless-bluetooth-keyboard">Pocket Keyboard</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__col-title">Company</div>
+          <ul class="footer__links" role="list">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__col-title">Legal</div>
+          <ul class="footer__links" role="list">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Refund Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2025 PocketDesk. All rights reserved.</span>
+        <span>Made with ⌨ for people who work anywhere.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer (available from all pages) -->
+  <div class="cart-overlay" aria-hidden="true" onclick="closeCart()"></div>
+  <aside class="cart-drawer" aria-label="Shopping cart" role="dialog">
+    <div class="cart-drawer__head">
+      <h2 class="cart-drawer__title">Your Cart</h2>
+      <button class="cart-close" onclick="closeCart()" aria-label="Close cart">×</button>
+    </div>
+    <div class="cart-drawer__body" id="cartBody"></div>
+    <div class="cart-drawer__foot" id="cartFooter" style="display:none">
+      <div class="cart-drawer__subtotal">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+      <button class="btn btn--accent btn--full btn--lg" onclick="checkout()">Checkout</button>
+      <p class="cart-drawer__note">Taxes and shipping calculated at checkout.</p>
+    </div>
+  </aside>
+
+  <button class="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <script src="script.js"></script>
+</body>
+</html>

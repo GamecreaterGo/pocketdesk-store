@@ -26,6 +26,7 @@ function currentPage() {
   if (filename === 'about.html') return 'about';
   if (filename === 'faq.html') return 'faq';
   if (filename === 'contact.html') return 'contact';
+  if (filename === 'checkout.html') return 'checkout';
   return '';
 }
 
@@ -435,15 +436,32 @@ async function initProductDetailPage() {
 
   // Add to cart button
   const addBtn = qs('#addToCartBtn');
-  if (addBtn) {
-    if (!p.inStock) {
+  const buyBtn = qs('#buyNowBtn');
+
+  if (!p.inStock) {
+    if (addBtn) {
       addBtn.textContent = 'Out of Stock';
       addBtn.disabled = true;
       addBtn.classList.replace('btn--accent', 'btn--outline');
-    } else {
+    }
+    if (buyBtn) {
+      buyBtn.textContent = 'Out of Stock';
+      buyBtn.disabled = true;
+      buyBtn.classList.replace('btn--primary', 'btn--outline');
+    }
+  } else {
+    if (addBtn) {
       addBtn.addEventListener('click', () => {
         const color = qs('#selectedColor')?.textContent || (p.colors?.[0] || 'Default');
         cart.add(p.id, color);
+      });
+    }
+    if (buyBtn) {
+      buyBtn.addEventListener('click', () => {
+        const color = qs('#selectedColor')?.textContent || (p.colors?.[0] || 'Default');
+        // Add to cart silently, then go straight to checkout
+        cart.add(p.id, color);
+        window.location.href = `checkout.html?id=${p.slug}`;
       });
     }
   }
@@ -666,7 +684,135 @@ function initContactForm() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CHECKOUT  (wire to Stripe or similar when ready)
+   CHECKOUT PAGE
+   Reads cart from localStorage and renders the order summary.
+───────────────────────────────────────────────────────────────── */
+async function initCheckoutPage() {
+  // Populate order summary from cart
+  const summaryEl = qs('#checkoutSummary');
+  if (!summaryEl) return;
+
+  // Load products so we can show full names/images even if cart is fresh
+  await loadProducts();
+
+  const items = cart.items;
+
+  if (!items.length) {
+    // Cart is empty — came directly to checkout with no items
+    // Try to pull the ?id= product and show it as a single-item summary
+    const slug = new URLSearchParams(window.location.search).get('id');
+    const ps   = await loadProducts();
+    const p    = ps.find(x => x.slug === slug || x.id === slug);
+    if (p) {
+      renderCheckoutSummary([{
+        name: p.name, image: p.image, color: p.colors?.[0] || 'Default',
+        price: p.price, qty: 1
+      }], summaryEl);
+      initCheckoutForm();
+    } else {
+      summaryEl.innerHTML = '<p style="color:var(--gray)">No items in cart.</p>';
+    }
+    return;
+  }
+
+  renderCheckoutSummary(items, summaryEl);
+  initCheckoutForm();
+}
+
+function renderCheckoutSummary(items, container) {
+  const subtotal = items.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+  const shipping = subtotal >= 50 ? 0 : 9.99;
+  const total    = subtotal + shipping;
+
+  container.innerHTML = `
+    <div class="checkout-summary__items">
+      ${items.map(item => `
+        <div class="checkout-summary__item">
+          <img src="${item.image}" alt="${item.name}"
+               onerror="this.style.background='var(--surface)'">
+          <div class="checkout-summary__item-info">
+            <div class="checkout-summary__item-name">${item.name}</div>
+            <div class="checkout-summary__item-meta">${item.color}${item.qty > 1 ? ` × ${item.qty}` : ''}</div>
+          </div>
+          <div class="checkout-summary__item-price">${fmtPrice(item.price * (item.qty || 1))}</div>
+        </div>`).join('')}
+    </div>
+    <div class="checkout-summary__totals">
+      <div class="checkout-summary__row">
+        <span>Subtotal</span><span>${fmtPrice(subtotal)}</span>
+      </div>
+      <div class="checkout-summary__row">
+        <span>Shipping</span>
+        <span>${shipping === 0 ? '<span style="color:var(--success)">Free</span>' : fmtPrice(shipping)}</span>
+      </div>
+      <div class="checkout-summary__row checkout-summary__row--total">
+        <span>Total</span><span>${fmtPrice(total)}</span>
+      </div>
+    </div>`;
+
+  // Also update the sticky total shown on the Place Order button
+  const btnTotal = qs('#placeOrderTotal');
+  if (btnTotal) btnTotal.textContent = fmtPrice(total);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CHECKOUT FORM VALIDATION
+───────────────────────────────────────────────────────────────── */
+function initCheckoutForm() {
+  const btn = qs('#placeOrderBtn');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const fields = [
+      { id: '#coName',    label: 'Full name' },
+      { id: '#coEmail',   label: 'Email address' },
+      { id: '#coPhone',   label: 'Phone number' },
+      { id: '#coAddress', label: 'Street address' },
+      { id: '#coCity',    label: 'City' },
+      { id: '#coZip',     label: 'ZIP / Postal code' },
+      { id: '#coCountry', label: 'Country' },
+    ];
+
+    let firstError = null;
+    fields.forEach(f => {
+      const el = qs(f.id);
+      if (!el) return;
+      const empty = !el.value.trim();
+      el.classList.toggle('input-error', empty);
+      if (empty && !firstError) firstError = f.label;
+    });
+
+    // Email format check
+    const emailEl = qs('#coEmail');
+    if (emailEl && emailEl.value && !emailEl.value.includes('@')) {
+      emailEl.classList.add('input-error');
+      if (!firstError) firstError = 'a valid email address';
+    }
+
+    if (firstError) {
+      toast(`Please enter ${firstError}.`);
+      return;
+    }
+
+    // Success — placeholder
+    btn.textContent = 'Order Placed! ✓';
+    btn.disabled = true;
+    btn.style.background = 'var(--success)';
+    toast('🎉 Order placed! We\'ll send a confirmation to your email.');
+
+    // Clear cart
+    cart.items = [];
+    cart.save();
+  });
+
+  // Clear error state on input
+  qsa('.form-control').forEach(el => {
+    el.addEventListener('input', () => el.classList.remove('input-error'));
+  });
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CHECKOUT (placeholder — wire to Stripe or similar when ready)
 ───────────────────────────────────────────────────────────────── */
 window.checkout = function() {
   if (cart.items.length === 0) {
@@ -703,6 +849,10 @@ function route() {
     } else {
       initProductsListPage();
     }
+  }
+
+  if (page === 'checkout') {
+    initCheckoutPage();
   }
 }
 
