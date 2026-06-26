@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — PocketDesk</title>
+  <meta name="description" content="Get in touch with the PocketDesk team. We reply to every message within 24 hours.">
+  <link rel="canonical" href="https://yoursite.com/contact.html">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0a0f'/><text y='22' x='7' font-size='18'>⌨</text></svg>">
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0A0A0F"/><rect x="6" y="11" width="16" height="10" rx="2" fill="white" opacity=".9"/><rect x="9" y="8" width="10" height="5" rx="1.5" fill="white" opacity=".5"/><rect x="11" y="13" width="2" height="2" rx=".4" fill="#0A0A0F"/><rect x="15" y="13" width="2" height="2" rx=".4" fill="#0A0A0F"/><rect x="11" y="17" width="6" height="2" rx=".4" fill="#0A0A0F"/></svg>
+        PocketDesk
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html">Home</a></li><li><a href="products.html">Shop</a></li><li><a href="about.html">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav__actions">
+        <button class="nav__cart-btn" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="cart-badge">0</span></button>
+        <button class="nav__hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav__mobile"><a href="index.html">Home</a><a href="products.html">Shop</a><a href="about.html">About</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></div>
+  </nav>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow" style="color:rgba(255,255,255,.5)">Get in Touch</p>
+        <h1>We'd love to hear<br>from you.</h1>
+        <p>Questions, ideas, feedback — we read every message and reply within 24 hours.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+
+          <!-- Contact methods -->
+          <div class="contact-info">
+            <p class="eyebrow">Contact Methods</p>
+            <h2 class="section-title" style="font-size:var(--text-2xl)">Multiple ways to reach us.</h2>
+
+            <div class="contact-method">
+              <div class="contact-method__icon">✉️</div>
+              <div>
+                <div class="contact-method__title">Email</div>
+                <div class="contact-method__detail">
+                  <a href="mailto:hello@pocketdesk.com">hello@pocketdesk.com</a><br>
+                  Response within 24 hours, Mon–Fri.
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-method__icon">💬</div>
+              <div>
+                <div class="contact-method__title">Live Chat</div>
+                <div class="contact-method__detail">
+                  Available 9am–6pm ET on business days.<br>
+                  Click the chat icon in the corner.
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-method__icon">📦</div>
+              <div>
+                <div class="contact-method__title">Order Support</div>
+                <div class="contact-method__detail">
+                  Have your order number ready and we'll resolve any issue — shipping, returns, warranty — same day.
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-method__icon">🕐</div>
+              <div>
+                <div class="contact-method__title">Response Times</div>
+                <div class="contact-method__detail">
+                  Email: within 24 hrs<br>
+                  Live chat: under 5 min<br>
+                  Social DM: same business day
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ shortcut -->
+            <div style="margin-top:var(--sp-4); padding:var(--sp-5); background:var(--surface); border-radius:var(--r-lg)">
+              <p style="font-weight:700; margin-bottom:var(--sp-2)">Quick answers</p>
+              <p style="font-size:var(--text-sm); color:var(--gray); margin-bottom:var(--sp-4)">
+                Many questions are answered in our FAQ — worth a quick check before writing in.
+              </p>
+              <a href="faq.html" class="btn btn--outline" style="font-size:var(--text-sm)">Browse FAQ →</a>
+            </div>
+          </div>
+
+          <!-- Contact form -->
+          <div class="contact-form">
+            <p class="eyebrow" style="margin-bottom:var(--sp-6)">Send a Message</p>
+
+            <div class="form-group">
+              <label for="contactName">Your Name</label>
+              <input type="text" id="contactName" class="form-control"
+                     placeholder="Alex Johnson" autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label for="contactEmail">Email Address</label>
+              <input type="email" id="contactEmail" class="form-control"
+                     placeholder="alex@example.com" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+              <label for="contactSubject">Subject</label>
+              <select id="contactSubject" class="form-control">
+                <option value="">Select a topic…</option>
+                <option value="order">Order / Shipping Question</option>
+                <option value="product">Product Question</option>
+                <option value="return">Return / Refund</option>
+                <option value="warranty">Warranty Claim</option>
+                <option value="wholesale">Wholesale / Bulk</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="contactMessage">Message</label>
+              <textarea id="contactMessage" class="form-control" rows="5"
+                        placeholder="Tell us how we can help…"></textarea>
+            </div>
+
+            <button id="contactSubmit" class="btn btn--accent btn--lg btn--full">
+              Send Message
+            </button>
+
+            <p style="font-size:var(--text-xs); color:var(--gray); margin-top:var(--sp-4); text-align:center">
+              We never share your information with third parties.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand"><a href="index.html" class="nav__logo" style="color:white; margin-bottom:var(--sp-4); display:inline-flex">PocketDesk</a><p>Premium productivity gadgets for people who work anywhere.</p></div>
+        <div><div class="footer__col-title">Shop</div><ul class="footer__links"><li><a href="products.html">All Products</a></li></ul></div>
+        <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="about.html">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div><div class="footer__col-title">Legal</div><ul class="footer__links"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+      </div>
+      <div class="footer__bottom"><span>© 2025 PocketDesk. All rights reserved.</span></div>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" onclick="closeCart()"></div>
+  <aside class="cart-drawer" role="dialog" aria-label="Shopping cart">
+    <div class="cart-drawer__head"><h2 class="cart-drawer__title">Your Cart</h2><button class="cart-close" onclick="closeCart()">×</button></div>
+    <div class="cart-drawer__body" id="cartBody"></div>
+    <div class="cart-drawer__foot" id="cartFooter" style="display:none"><div class="cart-drawer__subtotal"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div><button class="btn btn--accent btn--full btn--lg" onclick="checkout()">Checkout</button></div>
+  </aside>
+  <button class="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+  <div class="toast-container" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
