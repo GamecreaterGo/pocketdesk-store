@@ -14,7 +14,7 @@ const PRODUCTS_URL = 'products.json';
    PAGE DETECTION
    Uses href, not pathname.pop(), so it works correctly on:
    - file://  (local development)
-   - Netlify  (https://yoursite.com/)
+   - Netlify  (https://pocketdesk.netlify.app/)
    - GitHub Pages (https://user.github.io/repo/)
    - Any sub-path deployment
 ───────────────────────────────────────────────────────────────── */
@@ -267,10 +267,10 @@ function productCardHtml(p) {
             <span class="product-card__price-now">${fmtPrice(p.price)}</span>
             ${p.originalPrice ? `<span class="product-card__price-was">${fmtPrice(p.originalPrice)}</span>` : ''}
           </div>
-          <div class="product-card__rating">
+          ${p.rating ? `<div class="product-card__rating">
             <span class="stars">${starsHtml(p.rating)}</span>
             <span>(${p.reviewCount})</span>
-          </div>
+          </div>` : ''}
         </div>
       </div>
     </a>`;
@@ -358,9 +358,16 @@ async function initProductDetailPage() {
   setInnerText('#pdTagline', p.tagline);
   setInnerText('#pdDescription', p.description);
   setInnerText('#pdPriceNow', fmtPrice(p.price));
-  setInnerText('#pdRatingNum', p.rating.toFixed(1));
-  setInnerText('#pdReviewCount', `${p.reviewCount} reviews`);
-  setInnerText('#pdStars', starsHtml(p.rating));
+  // Rating — only show when real data exists
+  const ratingRow = qs('#pdRatingRow');
+  if (p.rating) {
+    setInnerText('#pdRatingNum', p.rating.toFixed(1));
+    setInnerText('#pdReviewCount', `${p.reviewCount} reviews`);
+    setInnerText('#pdStars', starsHtml(p.rating));
+    if (ratingRow) ratingRow.style.display = '';
+  } else {
+    if (ratingRow) ratingRow.style.display = 'none';
+  }
 
   // Sale pricing
   const wasEl  = qs('#pdPriceWas');
@@ -509,15 +516,20 @@ function setInnerText(sel, text) {
    individual sub-elements are checked independently instead.
 ───────────────────────────────────────────────────────────────── */
 function renderReviews(p) {
-  // Summary
+  // Summary — only show aggregate score if real rating data exists
   const summaryEl = qs('#reviewSummary');
   if (summaryEl) {
-    summaryEl.innerHTML = `
-      <div class="reviews-summary__score">${p.rating.toFixed(1)}</div>
-      <div>
-        <div class="reviews-summary__stars">${starsHtml(p.rating)}</div>
-        <div class="reviews-summary__count">${p.reviewCount} reviews</div>
-      </div>`;
+    if (p.rating) {
+      summaryEl.innerHTML = `
+        <div class="reviews-summary__score">${p.rating.toFixed(1)}</div>
+        <div>
+          <div class="reviews-summary__stars">${starsHtml(p.rating)}</div>
+          <div class="reviews-summary__count">${p.reviewCount} reviews</div>
+        </div>`;
+      summaryEl.style.display = '';
+    } else {
+      summaryEl.style.display = 'none';
+    }
   }
 
   // Cards: seeded from products.json + user-submitted (localStorage)
@@ -720,8 +732,8 @@ async function initCheckoutPage() {
 
 function renderCheckoutSummary(items, container) {
   const subtotal = items.reduce((s, i) => s + i.price * (i.qty || 1), 0);
-  const shipping = subtotal >= 50 ? 0 : 9.99;
-  const total    = subtotal + shipping;
+  const shipping = 0; // Shipping calculated after order; shown as "TBD"
+  const total    = subtotal;
 
   container.innerHTML = `
     <div class="checkout-summary__items">
@@ -742,7 +754,7 @@ function renderCheckoutSummary(items, container) {
       </div>
       <div class="checkout-summary__row">
         <span>Shipping</span>
-        <span>${shipping === 0 ? '<span style="color:var(--success)">Free</span>' : fmtPrice(shipping)}</span>
+        <span style="color:var(--gray)">Calculated after order</span>
       </div>
       <div class="checkout-summary__row checkout-summary__row--total">
         <span>Total</span><span>${fmtPrice(total)}</span>
@@ -793,15 +805,12 @@ function initCheckoutForm() {
       return;
     }
 
-    // Success — placeholder
-    btn.textContent = 'Order Placed! ✓';
+    // No real payment processor is connected yet.
+    // Show a neutral holding state — do NOT imply payment was taken.
+    btn.textContent = 'Details received ✓';
     btn.disabled = true;
-    btn.style.background = 'var(--success)';
-    toast('🎉 Order placed! We\'ll send a confirmation to your email.');
-
-    // Clear cart
-    cart.items = [];
-    cart.save();
+    btn.style.background = 'var(--ink-muted)';
+    toast('Details received. We will contact you at your email to arrange payment.');
   });
 
   // Clear error state on input
