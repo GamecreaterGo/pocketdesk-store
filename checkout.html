@@ -6,6 +6,8 @@
   <title>Checkout — PocketDesk</title>
   <meta name="description" content="Complete your PocketDesk order. Secure checkout with fast shipping.">
   <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://pocketdesk.netlify.app/checkout.html">
+  <meta property="og:url" content="https://pocketdesk.netlify.app/checkout.html">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0a0f'/><text y='22' x='7' font-size='18'>⌨</text></svg>">
 </head>
@@ -163,6 +165,14 @@
               </div>
             </div>
 
+
+                <!-- Dispatch notice -->
+                <div style="background:rgba(0,102,204,.06); border:1px solid rgba(0,102,204,.15); border-radius:var(--r-md); padding:var(--sp-4); margin-bottom:var(--sp-5);">
+                  <p style="font-size:var(--text-sm); color:var(--ink-muted); margin:0;">
+                    <strong>📦 Dispatch time:</strong> Orders are dispatched within up to <strong>14 calendar days (2 weeks)</strong> of confirmed payment. You will receive a shipping notification by email once your order is on its way.
+                  </p>
+                </div>
+
             <!-- Shipping method -->
             <div style="margin-top: var(--sp-6);">
               <div class="checkout-section-title" style="font-size:var(--text-sm);">
@@ -179,25 +189,9 @@
                          style="accent-color:var(--accent); width:16px; height:16px;">
                   <div style="flex:1">
                     <div style="font-weight:700; font-size:var(--text-sm);">Standard Shipping</div>
-                    <div style="font-size:var(--text-xs); color:var(--gray);">3–5 business days</div>
+                    <div style="font-size:var(--text-xs); color:var(--gray);">Delivery time varies by destination</div>
                   </div>
-                  <div style="font-size:var(--text-sm); font-weight:600; color:var(--success);">
-                    Free over $50
-                  </div>
-                </label>
-
-                <label class="shipping-option" style="
-                  display:flex; align-items:center; gap:var(--sp-4);
-                  padding: var(--sp-4); border-radius: var(--r-md);
-                  border: 1.5px solid var(--gray-lt);
-                  cursor:pointer;">
-                  <input type="radio" name="shipping" value="express"
-                         style="accent-color:var(--accent); width:16px; height:16px;">
-                  <div style="flex:1">
-                    <div style="font-weight:700; font-size:var(--text-sm);">Express Shipping</div>
-                    <div style="font-size:var(--text-xs); color:var(--gray);">1–2 business days</div>
-                  </div>
-                  <div style="font-size:var(--text-sm); font-weight:600;">$14.99</div>
+                  <div style="font-size:var(--text-sm); font-weight:600;">Calculated at checkout</div>
                 </label>
 
               </div>
@@ -297,9 +291,9 @@
         <div>
           <div class="footer__col-title">Legal</div>
           <ul class="footer__links" role="list">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Refund Policy</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="refunds.html">Refund Policy</a></li>
           </ul>
         </div>
       </div>

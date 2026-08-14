@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop — PocketDesk</title>
   <meta name="description" content="Shop PocketDesk's full lineup of premium productivity gadgets. Foldable keyboards, desk stands, charging hubs and more.">
-  <link rel="canonical" href="https://yoursite.com/products.html">
-  <link rel="preconnect" href="https://placehold.co">
-  <link rel="stylesheet" href="style.css">
+  <link rel="canonical" href="https://pocketdesk.netlify.app/products.html">
+  <meta property="og:url" content="https://pocketdesk.netlify.app/products.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0a0f'/><text y='22' x='7' font-size='18'>⌨</text></svg>">
 
   <!-- Inline style for two-mode layout management -->
@@ -110,7 +109,7 @@
             <!-- Gallery -->
             <div class="gallery" aria-label="Product images">
               <div class="gallery__main">
-                <img id="galleryMain" src="https://placehold.co/600x500/f5f5f7/86868b?text=Loading"
+                <img id="galleryMain" src="images/keyboard1.jpg"
                      alt="Product image" width="600" height="500" loading="eager">
               </div>
               <div class="gallery__thumbs" id="galleryThumbs" aria-label="Image thumbnails">
@@ -124,7 +123,7 @@
               <h1 class="product-info__title" id="pdTitle">Loading…</h1>
               <p class="product-info__tagline" id="pdTagline"></p>
 
-              <div class="product-info__rating">
+              <div class="product-info__rating" id="pdRatingRow">
                 <span class="stars" id="pdStars">★★★★★</span>
                 <span id="pdRatingNum">4.8</span>
                 <a href="#reviews" id="pdReviewLink">
@@ -145,6 +144,9 @@
               <div class="product-info__cta">
                 <button id="addToCartBtn" class="btn btn--accent btn--lg btn--full">
                   Add to Cart
+                </button>
+                <button id="buyNowBtn" class="btn btn--primary btn--lg btn--full">
+                  Buy Now
                 </button>
                 <div class="product-info__guarantee">
                   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -265,7 +267,7 @@
           <div class="footer__col-title">Shop</div>
           <ul class="footer__links" role="list">
             <li><a href="products.html">All Products</a></li>
-            <li><a href="products.html?id=foldable-bluetooth-pocket-keyboard">Pocket Keyboard</a></li>
+            <li><a href="products.html?id=mini-foldable-wireless-bluetooth-keyboard">Pocket Keyboard</a></li>
           </ul>
         </div>
         <div>
@@ -276,14 +278,14 @@
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
-        <div>
+                <div>
           <div class="footer__col-title">Legal</div>
           <ul class="footer__links" role="list">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="refunds.html">Refund Policy</a></li>
           </ul>
         </div>
-      </div>
       <div class="footer__bottom">
         <span>© 2025 PocketDesk. All rights reserved.</span>
       </div>
